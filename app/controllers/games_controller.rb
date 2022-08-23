@@ -3,7 +3,7 @@ class GamesController < ApplicationController
 
   # GET /games
   def index
-    @games = Game.where(nil)
+    @games = Game.where(nil).order(:title)
     @games = @games.where("players_min <= ? AND players_max >= ?", params[:players], params[:players]) if params[:players].present?
     @games = @games.where("playtime <= ?", params[:playtime]) if params[:playtime].present?
     @games = @games.where(:coop) if params[:coop].present?
