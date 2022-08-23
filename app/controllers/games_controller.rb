@@ -8,7 +8,7 @@ class GamesController < ApplicationController
     @games = @games.where("playtime <= ?", params[:playtime]) if params[:playtime].present?
     @games = @games.where(:coop) if params[:coop].present?
 
-    render json: @games
+    render json: @games, include: :tags
   end
 
   # GET /games/1
