@@ -6,14 +6,16 @@ class GamesController < ApplicationController
     @games = Game.where(nil).order(:title)
     @games = @games.where("players_min <= ? AND players_max >= ?", params[:players], params[:players]) if params[:players].present?
     @games = @games.where("playtime <= ?", params[:playtime]) if params[:playtime].present?
-    @games = @games.where(:coop) if params[:coop].present?
 
-    render json: @games, include: :tags
+    @pagy, @games = pagy(@games)
+
+    # render json: @games, include: :tags
+    render json: { games: @games.as_json(include: :tags), pagy: @pagy }
   end
 
   # GET /games/1
   def show
-    render json: @game
+    render json: @game, include: :tags
   end
 
   # POST /games
