@@ -3,9 +3,19 @@ class GamesController < ApplicationController
 
   # GET /games
   def index
-    @games = Game.where(nil).order(:title)
+    @games = Game.where(nil)
     @games = @games.where("players_min <= ? AND players_max >= ?", params[:players], params[:players]) if params[:players].present?
     @games = @games.where("playtime <= ?", params[:playtime]) if params[:playtime].present?
+    @games = @games.joins(:tags).where(tags: {id: params[:tag_ids]}) if params[:tag_ids].present?
+
+    case params[:order]
+    when 'playtime'
+      @games = @games.order(:playtime)
+    else
+      @games = @games.order(:title)
+    end
+
+    @games = @games.distinct
 
     @pagy, @games = pagy(@games)
 
