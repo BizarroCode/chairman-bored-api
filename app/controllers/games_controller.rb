@@ -53,6 +53,11 @@ class GamesController < ApplicationController
     @game.destroy
   end
 
+  # query boardgamegeek
+  def bgg
+    render plain: 'ok'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
   def set_game
